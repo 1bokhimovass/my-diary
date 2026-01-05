@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Diary</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Modal (Oyna) Dizayni */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .edit-card {
+        background: #1a0b2e;
+        padding: 30px;
+        border-radius: 25px;
+        width: 90%;
+        max-width: 400px;
+        border: 1px solid #ff00cc;
+        box-shadow: 0 0 20px rgba(255, 0, 204, 0.3);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .edit-card input,
+      .edit-card textarea {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 12px;
+        border-radius: 12px;
+        color: white;
+        outline: none;
+      }
+
+      /* Tahrirlash (Qalamcha) Tugmasi */
+      .edit-trigger {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1000;
+        transition: 0.3s;
+        font-size: 20px;
+      }
+      .edit-trigger:hover {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* Mobil uchun moslashuv */
+      @media (max-width: 600px) {
+        .edit-trigger {
+          top: 10px;
+          right: 10px;
+          font-size: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="edit-trigger"
+      onclick="openProfileModal()"
+      title="Profilni tahrirlash"
+    >
+      ✏️
+    </div>
+
+    <div id="profileModal" class="modal-overlay">
+      <div class="edit-card">
+        <h3 style="color: #ff00cc; margin: 0; text-align: center">
+          Profil sozlamalari
+        </h3>
+        <input
+          type="text"
+          id="userNameInput"
+          placeholder="Ismingizni kiriting..."
+        />
+        <textarea
+          id="userBioInput"
+          placeholder="O'zingiz haqingizda yozing..."
+          rows="3"
+        ></textarea>
+        <button class="update-btn" onclick="updateProfile()">Saqlash ✨</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <header class="profile-header">
+        <div class="avatar">🧚🏻‍♀️</div>
+        <h1 id="displayName">Ism yuklanmoqda...</h1>
+        <div class="bio-card">
+          <p id="displayBio">Biografiya yuklanmoqda...</p>
+        </div>
+      </header>
+
+      <section class="write-section">
+        <textarea id="postInput" placeholder="Бугун нма клдм?"></textarea>
+        <div class="emoji-panel">
+          <span onclick="addEmoji('😊')">😊</span>
+          <span onclick="addEmoji('😂')">😂</span>
+          <span onclick="addEmoji('😍')">😍</span>
+          <span onclick="addEmoji('✨')">✨</span>
+          <span onclick="addEmoji('🌸')">🌸</span>
+          <span onclick="addEmoji('📸')">📸</span>
+          <span onclick="addEmoji('💻')">💻</span>
+          <span onclick="addEmoji('🌙')">🌙</span>
+          <span onclick="addEmoji('🍕')">🍕</span>
+          <span onclick="addEmoji('🧚🏻‍♀️')">🧚🏻‍♀️</span>
+        </div>
+        <div id="imgPreviewContainer"></div>
+        <div class="button-row">
+          <label class="file-label">
+            <span>📷 Rasm</span>
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              onchange="previewImage()"
+            />
+          </label>
+          <button onclick="addPost()">Saqlash ✨</button>
+        </div>
+      </section>
+
+      <main class="diary-section" id="diaryContainer">
+        <div class="section-title">
+          <h2>Bugungi qaydlar</h2>
+          <div class="line"></div>
+        </div>
+      </main>
+    </div>
+
+    <div id="imageModal" class="modal" onclick="closeModal()">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="fullImage" />
+    </div>
+
+    <script>
+      let selectedImageData = "";
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadPosts();
+        checkUserStatus(); // Foydalanuvchini tekshirish
+      });
+
+      // 1. Foydalanuvchi birinchi marta kirdimi yoki yo'qmi tekshirish
+      function checkUserStatus() {
+        const savedProfile = JSON.parse(localStorage.getItem("user_profile"));
+        if (!savedProfile) {
+          openProfileModal(); // Agar ma'lumot yo'q bo'lsa, oynani ochish
+        } else {
+          displayProfile(savedProfile);
+        }
+      }
+
+      function openProfileModal() {
+        document.getElementById("profileModal").style.display = "flex";
+      }
+
+      function updateProfile() {
+        const nameVal = document.getElementById("userNameInput").value;
+        const bioVal = document.getElementById("userBioInput").value;
+
+        if (nameVal.trim() === "" || bioVal.trim() === "") {
+          alert("Iltimos, ism va bioni to'ldiring!");
+          return;
+        }
+
+        const profileData = { name: nameVal, bio: bioVal };
+        localStorage.setItem("user_profile", JSON.stringify(profileData));
+
+        displayProfile(profileData);
+        document.getElementById("profileModal").style.display = "none";
+      }
+
+      function displayProfile(data) {
+        document.getElementById("displayName").innerText = data.name;
+        document.getElementById("displayBio").innerText = data.bio;
+      }
+
+      // Qolgan funksiyalar (Postlar uchun)
+      function addEmoji(emoji) {
+        const input = document.getElementById("postInput");
+        input.value += emoji;
+        input.focus();
+      }
+
+      function previewImage() {
+        const file = document.getElementById("imageInput").files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          selectedImageData = reader.result;
+          document.getElementById(
+            "imgPreviewContainer"
+          ).innerHTML = `<img src="${selectedImageData}" class="preview-img">`;
+        };
+        if (file) reader.readAsDataURL(file);
+      }
+
+      function addPost() {
+        const input = document.getElementById("postInput");
+        if (input.value.trim() === "" && !selectedImageData) return;
+
+        const now = new Date();
+        const dateStr =
+          now.toLocaleDateString("uz-UZ") +
+          ", " +
+          now.getHours() +
+          ":" +
+          now.getMinutes().toString().padStart(2, "0");
+
+        const newPostObj = {
+          id: Date.now(),
+          date: dateStr,
+          content: input.value,
+          image: selectedImageData,
+        };
+
+        let posts = JSON.parse(localStorage.getItem("mashkura_diary")) || [];
+        posts.unshift(newPostObj);
+        localStorage.setItem("mashkura_diary", JSON.stringify(posts));
+
+        renderPosts();
+        input.value = "";
+        selectedImageData = "";
+        document.getElementById("imgPreviewContainer").innerHTML = "";
+      }
+
+      function renderPosts() {
+        const container = document.getElementById("diaryContainer");
+        const posts = JSON.parse(localStorage.getItem("mashkura_diary")) || [];
+        container.innerHTML = `<div class="section-title"><h2>Bugungi qaydlar</h2><div class="line"></div></div>`;
+
+        posts.forEach((post) => {
+          const postDiv = document.createElement("div");
+          postDiv.className = "post";
+          let imgHtml = post.image
+            ? `<img src="${post.image}" class="post-thumb" onclick="openModal('${post.image}')">`
+            : "";
+
+          postDiv.innerHTML = `
+                <div class="post-body">
+                    <div class="post-text">
+                        <div class="post-header">
+                            <span class="date">${post.date}</span>
+                            <span class="delete-btn" onclick="deletePost(${post.id})">×</span>
+                        </div>
+                        <p>${post.content}</p>
+                    </div>
+                    ${imgHtml}
+                </div>`;
+          container.appendChild(postDiv);
+        });
+      }
+
+      function openModal(src) {
+        document.getElementById("imageModal").style.display = "block";
+        document.getElementById("fullImage").src = src;
+      }
+
+      function closeModal() {
+        document.getElementById("imageModal").style.display = "none";
+      }
+
+      function deletePost(id) {
+        if (confirm("O'chirilsinmi?")) {
+          let posts = JSON.parse(localStorage.getItem("mashkura_diary")) || [];
+          posts = posts.filter((p) => p.id !== id);
+          localStorage.setItem("mashkura_diary", JSON.stringify(posts));
+          renderPosts();
+        }
+      }
+
+      function loadPosts() {
+        renderPosts();
+      }
+    </script>
+  </body>
+</html>
