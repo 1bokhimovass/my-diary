@@ -1,21 +1,17 @@
 :root {
-  --bg-color: #080112;
-  --card-bg: rgba(26, 11, 46, 0.9);
-  --accent: #ff00c8;
-  --accent-glow: rgba(255, 0, 200, 0.3);
-  --secondary: #9d50bb;
-  --text-main: #ffffff;
-  --text-dim: #cfcfcf;
+  --primary: #007aff; /* Apple Blue */
+  --bg: #ffffff;
+  --card: #f2f2f7;
+  --text: #1c1c1e;
+  --text-dim: #8e8e93;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 body {
-  background-color: var(--bg-color);
-  background-image: radial-gradient(circle at top right, #1a0b2e, transparent),
-    radial-gradient(circle at bottom left, #0d0221, transparent);
-  color: var(--text-main);
-  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, system-ui, sans-serif;
   margin: 0;
-  padding: 0;
   display: flex;
   justify-content: center;
   min-height: 100vh;
@@ -23,189 +19,172 @@ body {
 
 .container {
   width: 100%;
-  max-width: 600px;
+  max-width: 480px; /* Telefon kengligi */
   padding: 20px;
-  box-sizing: border-box;
+  padding-bottom: 100px;
 }
 
-/* Profil qismi - Yanada jonli */
+/* Profil dizayni */
 .profile-header {
-  padding: 40px 0 20px;
+  text-align: center;
+  margin: 40px 0 30px;
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
-  background: linear-gradient(135deg, var(--secondary), var(--accent));
-  border-radius: 30px; /* Yumshoq kvadrat */
-  margin: 0 auto 15px;
+  width: 96px;
+  height: 96px;
+  background: white;
+  border-radius: 28px;
+  margin: 0 auto 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 45px;
-  box-shadow: 0 10px 30px var(--accent-glow);
-  transform: rotate(-5deg); /* Biroz qiyshiq - trend dizayn */
+  font-size: 48px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 h1 {
-  font-size: 2.2rem;
-  margin: 10px 0;
-  background: linear-gradient(to right, #fff, var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -1px;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
 }
 
 .bio-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 24px;
+  margin-top: 12px;
   font-size: 15px;
   color: var(--text-dim);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  line-height: 1.4;
+  padding: 0 20px;
 }
 
-/* Yozish bo'limi - Telefon uchun qulay */
+/* Yozish bo'limi - Toza va havodor */
 .write-section {
-  background: var(--card-bg);
-  backdrop-filter: blur(15px);
-  padding: 25px;
-  border-radius: 28px;
-  margin-bottom: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  background: var(--card);
+  border-radius: 24px;
+  padding: 20px;
+  margin-top: 20px;
 }
 
 textarea {
   width: 100%;
-  min-height: 80px;
-  background: transparent;
   border: none;
-  color: white;
-  font-size: 17px;
+  background: transparent;
+  font-size: 16px;
+  color: var(--text);
   outline: none;
   resize: none;
+  height: 80px;
 }
 
-.emoji-panel {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
+/* Tugmalar qatori - Rasmdagi xatoni tuzatish */
 .button-row {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
   gap: 12px;
 }
 
-button,
 .file-label {
-  flex: 1;
-  height: 55px; /* Barmoq uchun qulay */
+  background: white;
+  padding: 10px 16px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 18px;
-  font-weight: 600;
-  font-size: 16px;
-  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  gap: 6px;
 }
 
-.file-label {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-main);
-}
+.file-label input {
+  display: none;
+} /* Eskicha xunuk tugmani yashiramiz */
 
 button {
-  background: linear-gradient(45deg, var(--secondary), var(--accent));
+  background: var(--primary);
   color: white;
   border: none;
-  box-shadow: 0 8px 20px var(--accent-glow);
+  padding: 10px 24px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: 0.2s;
 }
 
 button:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
 }
 
-/* Postlar dizayni - Social Media uslubida */
+/* Postlar - Elegant list */
 .post {
-  background: var(--card-bg);
-  padding: 20px;
-  border-radius: 28px;
-  margin-bottom: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  margin-top: 30px;
+  border-top: 1px solid #efefef;
+  padding-top: 20px;
 }
 
-.date {
-  display: block;
-  margin-bottom: 10px;
-  opacity: 0.6;
+.post-header {
+  display: flex;
+  justify-content: space-between;
   font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
 }
 
 .post-text p {
-  margin: 0;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.5;
+  margin: 0;
 }
 
 .post-thumb {
   width: 100%;
-  height: 250px;
+  border-radius: 16px;
+  margin-top: 12px;
   object-fit: cover;
-  border-radius: 20px;
-  margin-top: 15px;
+  max-height: 350px;
 }
 
 /* Tahrirlash qalamchasi */
 .edit-trigger {
   position: fixed;
-  bottom: 30px; /* Pastga tushirdik - barmoq yetishi uchun oson */
-  right: 25px;
-  width: 65px;
-  height: 65px;
-  background: var(--accent);
-  border-radius: 50%;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: white;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
-  box-shadow: 0 10px 30px var(--accent-glow);
-  z-index: 999;
+  font-size: 22px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  z-index: 100;
 }
 
-/* Modal - To'liq ekranli va chiroyli */
+/* Modal sozlamalari */
 .modal-overlay {
-  background: rgba(8, 1, 18, 0.95) !important;
-  backdrop-filter: blur(20px) !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(8px);
 }
 
 .edit-card {
-  background: #1a0b2e !important;
-  border: 1px solid var(--accent) !important;
-  padding: 30px !important;
-  border-radius: 35px !important;
+  background: white !important;
+  border-radius: 32px !important;
+  width: 90%;
+  max-width: 360px;
+  padding: 32px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Mobil uchun maxsus optimizatsiya */
-@media (max-width: 480px) {
-  .container {
-    padding: 15px;
-  }
-  h1 {
-    font-size: 1.8rem;
-  }
-  .avatar {
-    width: 85px;
-    height: 85px;
-    font-size: 35px;
-  }
-  .post {
-    padding: 18px;
-  }
+.edit-card input,
+.edit-card textarea {
+  background: #f2f2f7 !important;
+  border: none !important;
+  margin-bottom: 12px;
+  padding: 14px !important;
+  border-radius: 12px !important;
+  color: black !important;
 }
