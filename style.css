@@ -1,190 +1,149 @@
 :root {
-  --primary: #007aff; /* Apple Blue */
-  --bg: #ffffff;
-  --card: #f2f2f7;
-  --text: #1c1c1e;
-  --text-dim: #8e8e93;
-  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  --accent: #ff00cc;
+  --bg-dark: #0f0c29;
+  --glass: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, system-ui, sans-serif;
-  margin: 0;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: white;
+  font-family: "Poppins", sans-serif;
   display: flex;
   justify-content: center;
   min-height: 100vh;
 }
 
-.container {
+.app-wrapper {
   width: 100%;
-  max-width: 480px; /* Telefon kengligi */
-  padding: 20px;
-  padding-bottom: 100px;
-}
-
-/* Profil dizayni */
-.profile-header {
-  text-align: center;
-  margin: 40px 0 30px;
-}
-
-.avatar {
-  width: 96px;
-  height: 96px;
-  background: white;
-  border-radius: 28px;
-  margin: 0 auto 16px;
+  max-width: 450px;
+  padding: 40px 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  flex-direction: column;
+  gap: 30px;
 }
 
-h1 {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.bio-card {
-  margin-top: 12px;
-  font-size: 15px;
-  color: var(--text-dim);
-  line-height: 1.4;
-  padding: 0 20px;
-}
-
-/* Yozish bo'limi - Toza va havodor */
-.write-section {
-  background: var(--card);
-  border-radius: 24px;
-  padding: 20px;
-  margin-top: 20px;
-}
-
-textarea {
-  width: 100%;
-  border: none;
-  background: transparent;
-  font-size: 16px;
-  color: var(--text);
-  outline: none;
-  resize: none;
-  height: 80px;
-}
-
-/* Tugmalar qatori - Rasmdagi xatoni tuzatish */
-.button-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 16px;
-  gap: 12px;
-}
-
-.file-label {
-  background: white;
-  padding: 10px 16px;
-  border-radius: 14px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.file-label input {
-  display: none;
-} /* Eskicha xunuk tugmani yashiramiz */
-
-button {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 14px;
-  font-weight: 600;
-  font-size: 15px;
-  transition: 0.2s;
-}
-
-button:active {
-  transform: scale(0.96);
-}
-
-/* Postlar - Elegant list */
-.post {
-  margin-top: 30px;
-  border-top: 1px solid #efefef;
-  padding-top: 20px;
-}
-
-.post-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  color: var(--text-dim);
-  margin-bottom: 8px;
-}
-
-.post-text p {
-  font-size: 16px;
-  line-height: 1.5;
-  margin: 0;
-}
-
-.post-thumb {
-  width: 100%;
-  border-radius: 16px;
-  margin-top: 12px;
-  object-fit: cover;
-  max-height: 350px;
-}
-
-/* Tahrirlash qalamchasi */
-.edit-trigger {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
-  background: white;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-  z-index: 100;
-}
-
-/* Modal sozlamalari */
+/* Modal Markazda chiqishi uchun */
 .modal-overlay {
-  background: rgba(0, 0, 0, 0.5) !important;
-  backdrop-filter: blur(8px);
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(15px);
 }
 
 .edit-card {
-  background: white !important;
-  border-radius: 32px !important;
-  width: 90%;
+  background: #1a1a2e;
+  padding: 30px;
+  border-radius: 30px;
+  width: 85%;
   max-width: 360px;
-  padding: 32px !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+  text-align: center;
+  border: 1px solid var(--accent);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
 .edit-card input,
 .edit-card textarea {
-  background: #f2f2f7 !important;
-  border: none !important;
-  margin-bottom: 12px;
-  padding: 14px !important;
-  border-radius: 12px !important;
-  color: black !important;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 12px;
+  color: white;
+  margin-bottom: 15px;
+  outline: none;
+}
+
+/* Header & Avatar */
+.header {
+  text-align: center;
+}
+.avatar-circle {
+  width: 90px;
+  height: 90px;
+  background: #1a1a2e;
+  margin: 0 auto 15px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 45px;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 20px rgba(255, 0, 204, 0.3);
+}
+
+h1 {
+  font-family: "Dancing Script", cursive;
+  font-size: 36px;
+}
+
+/* Input field */
+.glass-input {
+  background: var(--glass);
+  border-radius: 25px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+textarea#postInput {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  height: 80px;
+}
+
+.btn-main {
+  background: linear-gradient(45deg, var(--accent), #333399);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Floating Edit button */
+.edit-trigger-fixed {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--glass);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 999;
+}
+
+/* Postlar */
+.post {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 15px;
+  margin-top: 15px;
+  border-left: 4px solid var(--accent);
+}
+.post-thumb {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 10px;
 }
